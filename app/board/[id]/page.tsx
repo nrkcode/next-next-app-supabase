@@ -2,11 +2,45 @@ import Image from "next/image";
 /** UI 컴포넌트 */
 import { AlertPopup, BoardCard } from "@/components/common";
 import { Button, LabelDatePicker, Progress } from "@/components/ui";
-import { ChevronLeft } from "@/public/assets/icons";
+import { ChevronLeft } from "@/public/assets/icons/index";
 /** 스타일 */
 import styles from "./page.module.scss";
 
-function BoardUniquePage() {
+import { toast, useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
+import { Task } from "@/types";
+import { useRouter, useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+function BoardPage() {
+    const { toast } = useToast();
+    const router = useRouter();
+    const { id }= useParams();
+    const [task, setTask] = useState<Task[]>([]);
+
+    /** 특정 id 값에 따른 TASK 데이터 */
+    const getTask = async () => {
+        try {
+            const { data, status } = await supabase.from("todos").select("*");
+
+            if (status === 200 && data !== null) setTask(data);
+        } catch (error) {
+            console.error(error);
+            toast({
+                variant: "destructive",
+                title: "에러",
+                description: "에러발생",
+            });
+        }
+    };
+
+    /** Board Card 생성 및 데이터베이스에 저장 */
+    const handleCreateBoard  = async () => {};
+    
+    useEffect(() => {
+        getTask();
+    }, []);
+    
     return (
         <>
             <div className={styles.header}>
@@ -41,13 +75,13 @@ function BoardUniquePage() {
             </div>
             <div className={styles.body}>
                 {/* Add New Board 버튼 클릭으로 인한 Board 데이터가 없을 경우 */}
-                {/* <div className={styles.body__noData}>
+                <div className={styles.body__noData}>
                     <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">There is no board yet.</h3>
                     <small className="text-sm font-medium leading-none text-[#6D6D6D] mt-3 mb-7">Click the button and start flashing!</small>
-                    <button>
+                    <button onClick={handleCreateBoard}>
                         <Image src="/assets/images/button.svg" width={74} height={74} alt="rounded-button" />
                     </button>
-                </div> */}
+                </div>
                 {/* Add New Board 버튼 클릭으로 인한 Board 데이터가 있을 경우 */}
                 <div className={styles.body__isData}>
                     <BoardCard />
@@ -57,4 +91,4 @@ function BoardUniquePage() {
     );
 }
 
-export default BoardUniquePage;
+export default BoardPage;
