@@ -69,7 +69,7 @@ function AsideSection() {
 
     useEffect(() => {
         getTasks();
-    }, []);
+    }, [tasks]);
 
     return (
         <aside className="page__aside">
