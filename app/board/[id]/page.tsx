@@ -129,7 +129,6 @@ function BoardPage() {
                     </button>
                 </div>
             )}
-
             </div>
         </>
     );
