@@ -61,8 +61,8 @@ function BoardPage() {
         try {
             const { data, status } = await supabase
                 .from("todos")
-                .update({ boards: boards })
-                .eq("id", id);
+                .update({ [column]: newValue })
+                .eq("id", uid);
 
             if ( data !== null && status ===204 ) {
                 toast({
