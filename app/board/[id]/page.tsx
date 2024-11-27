@@ -28,7 +28,10 @@ function BoardPage() {
         try {
             const { data, status } = await supabase.from("todos").select("*").eq("id", id);
 
-            if (status === 200 && data !== null) setTask(data[0]);
+            if (data !== null && status === 200) {
+                setTask(data[0]);
+                setBoards(data[0].boards || []);
+            }
         } catch (error) {
             console.error(error);
             toast({
@@ -49,8 +52,9 @@ function BoardPage() {
             content: "",
             isCompleted: false,
         };
-        setBoards((prevBoards) => [...prevBoards, newBoard]);
-        updateTaskOneColumnById(Number(id), "boards", boards);
+        const updatedBoards = [...boards, newBoard];
+        setBoards(updatedBoards);
+        updateTaskOneColumnById(Number(id), "boards", updatedBoards);
     };
 
     const updateTaskOneColumnById = async (uid: number, column: string, newValue: any) => {
@@ -58,8 +62,7 @@ function BoardPage() {
             const { data, status } = await supabase
                 .from("todos")
                 .update({ boards: boards })
-                .eq("id", id)
-                .select()
+                .eq("id", id);
 
             if ( data !== null && status ===204 ) {
                 toast({
@@ -111,7 +114,6 @@ function BoardPage() {
             <div className={styles.body}>
             {boards.length !== 0 ? (
                 //{/* Add New Board 버튼 클릭으로 인한 Board 데이터가 있을 경우 */}
-                
                 <div className={styles.body__isData}>
                     {boards.map((board: Board)=>{
                         return <BoardCard key={board.id}/>;
