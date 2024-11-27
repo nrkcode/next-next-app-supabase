@@ -43,7 +43,7 @@ function BoardPage() {
     };
 
     /** Board Card 생성 및 데이터베이스에 저장 */
-    const handleCreateBoard  = async () => {
+    const handleCreateBoard  = () => {
         const newBoard: Board = {
             id: nanoid(),
             title: "",
