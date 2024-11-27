@@ -64,7 +64,7 @@ function BoardPage() {
                 .update({ [column]: newValue })
                 .eq("id", uid);
 
-            if ( data !== null && status ===204 ) {
+            if ( status ===204 ) {
                 toast({
                     title: "새로운 todo를 생성했습니다",
                     description: "생성한 todo-board를 확인하세요"
