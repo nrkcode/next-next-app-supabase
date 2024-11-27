@@ -19,16 +19,16 @@ function BoardPage() {
     const { toast } = useToast();
     const router = useRouter();
     const { id }= useParams();
-    const [task, setTask] = useState<Task[]>([]);
+    const [task, setTask] = useState<Task|null>(null);
     const [boards, setBoards] = useState<Board[]>(task?.boards || []);
     
 
     /** 특정 id 값에 따른 TASK 데이터 */
     const getTask = async () => {
         try {
-            const { data, status } = await supabase.from("todos").select("*");
+            const { data, status } = await supabase.from("todos").select("*").eq("id", id);
 
-            if (status === 200 && data !== null) setTask(data);
+            if (status === 200 && data !== null) setTask(data[0]);
         } catch (error) {
             console.error(error);
             toast({
@@ -105,7 +105,7 @@ function BoardPage() {
                         <LabelDatePicker label={"From"} />
                         <LabelDatePicker label={"To"} />
                     </div>
-                    <Button className="text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg">Add New Board</Button>
+                    <Button onClick={handleCreateBoard} className="text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg">Add New Board</Button>
                 </div>
             </div>
             <div className={styles.body}>
