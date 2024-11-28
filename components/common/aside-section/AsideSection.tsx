@@ -1,72 +1,22 @@
 "use client";
 
-/** 컴포넌트 */
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useGetTasks, useCreateTask } from "@/hooks/api";
+/** UI 컴포넌트 */
 import { Button, SearchBar } from "@/components/ui";
-import { toast, useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
 import { Task } from "@/types";
-import { useRouter, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 function AsideSection() {
-    const { toast } = useToast();
     const router = useRouter();
     const { id }= useParams();
-    const [tasks, setTasks] = useState<Task[]>([]);
-
-    /** 페이지목록- todos 전체 */
-    const getTasks = async () => {
-        try {
-            const { data, status } = await supabase.from("todos").select("*");
-
-            if (status === 200 && data !== null) setTasks(data);
-        } catch (error) {
-            console.error(error);
-            toast({
-                variant: "destructive",
-                title: "에러",
-                description: "에러발생",
-            });
-        }
-    };
-
+    //const [tasks, setTasks] = useAtom(taskAtom);
+    const { tasks, getTasks}=useGetTasks();
+    
     /** add new page */
-    const handleCreateTask = async () => {
-        console.log("버튼동작");
-        try {
-            const { data, status, error } = await supabase
-                .from("todos")
-                .insert([
-                    {
-                        title: "",
-                        start_date: null,
-                        end_date: null,
-                        boards: null,
-                    },
-                ])
-                .select();
-
-            console.log(data);
-
-            if (status === 201 && data) {
-                /** TOAST UI 띄우기 */
-                // 설치코드: npx shadcn@latest add toast
-                toast({
-                    title: "새로운 투두리스트가 생성",
-                    description: "수파베이스확인",
-                });
-                router.push(`/board/${data[0].id}`);
-            }
-        } catch (error) {
-            console.error(error);
-            toast({
-                variant: "destructive",
-                title: "생성실패",
-                description: "개발자 도구창을 확인하세요",
-            });
-        }
-    };
-
+    const handleCreateTask = useCreateTask();
+    
+    /** 페이지목록- todos 전체 */
     useEffect(() => {
         getTasks();
     }, [tasks]);

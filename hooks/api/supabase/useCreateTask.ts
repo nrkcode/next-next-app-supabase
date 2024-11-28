@@ -1,5 +1,5 @@
-
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
