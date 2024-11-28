@@ -1,47 +1,13 @@
 "use client";
 
+import { useCreateTask } from "@/hooks/api";
 import { Button } from "@/components/ui";
-import { toast, useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
 
 
 function InitPage() {
-    const { toast } = useToast();
-    const router = useRouter();
-    
-    
+
     /** add new page */
-    const handleCreateTask = async () => {
-        console.log("버튼동작");
-        try {
-            const { data, status, error } = await supabase
-                .from("todos")
-                .insert([
-                    { title: "", start_date: null, end_date: null, boards: null },
-                ])
-                .select();
-
-            console.log(data);
-
-            if (status === 201 && data) {
-                /** TOAST UI 띄우기 */
-                // 설치코드: npx shadcn@latest add toast
-                toast({
-                    title: "새로운 투두리스트가 생성",
-                    description: "수파베이스확인",
-                });
-                router.push(`/board/${data[0].id}`);
-            }
-        } catch (error) {
-            console.error(error);
-            toast({
-                variant: "destructive",
-                title: "새로운 투두리스트가 생성",
-                description: "개발자 도구창을 확인하세요",
-            });
-        }
-    };
+    const handleCreateTask = useCreateTask();
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-center">
