@@ -12,14 +12,14 @@ function AsideSection() {
     const { id }= useParams();
     //const [tasks, setTasks] = useAtom(taskAtom);
     const { tasks, getTasks}=useGetTasks();
-    
+
     /** add new page */
     const handleCreateTask = useCreateTask();
     
     /** 페이지목록- todos 전체 */
     useEffect(() => {
         getTasks();
-    }, [tasks]);
+    }, [id]);
 
     return (
         <aside className="page__aside">
