@@ -23,10 +23,10 @@ function useGetTasks() {
 
             if (data && status === 200) {
                 setTasks(data);
-                toast({
-                    title: "task loaded",
-                    description: "새로운 TASK가 생기시면 언제든 추가해주세요!",
-                });
+                // toast({
+                //     title: "task loaded",
+                //     description: "새로운 TASK가 생기시면 언제든 추가해주세요!",
+                // });
             }
 
             if (error) {
