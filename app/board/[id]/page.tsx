@@ -8,16 +8,15 @@ import { ChevronLeft } from "@/public/assets/icons/index";
 /** 스타일 */
 import styles from "./page.module.scss";
 
-import { toast, useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { Board, Task } from "@/types";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 function BoardPage() {
     const { toast } = useToast();
-    const router = useRouter();
     const { id }= useParams();
     const [task, setTask] = useState<Task|null>(null);
     const [boards, setBoards] = useState<Board[]>(task?.boards || []);
