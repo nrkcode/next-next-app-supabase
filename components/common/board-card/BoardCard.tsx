@@ -10,7 +10,7 @@ function BoardCard() {
             <div className="w-full flex items-center justify-between mb-4">
                 <div className="flex items-center justify-start gap-2">
                     <Checkbox className="h-5 w-5" />
-                    <input type="text" placeholder="제목 없음." className="text-xl outline-none bg-transparent" disabled={true} />
+                    <input type="text" placeholder="등록된 제목이 없습니다." className="w-full text-xl outline-none bg-transparent" disabled={true} />
                 </div>
                 <Button variant={"ghost"} size={"icon"}>
                     <ChevronUp className="text-[#6d6d6d]" />
